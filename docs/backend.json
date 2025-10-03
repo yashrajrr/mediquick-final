@@ -1,0 +1,264 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user account within the MediQuick Rx system.",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the user."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the user."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone number of the user."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user account was created.",
+          "format": "date-time"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the user within the system.",
+          "enum": ["customer", "seller", "doctor"]
+        }
+      },
+      "required": [
+        "email",
+        "firstName",
+        "lastName",
+        "createdAt",
+        "role"
+      ]
+    },
+    "Seller": {
+      "title": "Seller",
+      "type": "object",
+      "description": "Represents a seller account within the MediQuick Rx system.",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email address of the seller.",
+          "format": "email"
+        },
+        "pharmacyName": {
+          "type": "string",
+          "description": "Name of the pharmacy associated with the seller account."
+        },
+        "contactName": {
+          "type": "string",
+          "description": "Contact name for the pharmacy."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone number of the pharmacy."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the pharmacy."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the seller account was created.",
+          "format": "date-time"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the seller, always 'seller'."
+        }
+      },
+      "required": [
+        "email",
+        "pharmacyName",
+        "contactName",
+        "createdAt",
+        "role"
+      ]
+    },
+    "Doctor": {
+      "title": "Doctor",
+      "type": "object",
+      "description": "Represents a doctor's professional profile.",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The user ID from Firebase Auth."
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the doctor."
+        },
+        "specialties": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of medical specialties."
+        },
+        "qualifications": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of qualifications (e.g., MBBS, MD)."
+        },
+        "bio": {
+          "type": "string",
+          "description": "A short biography of the doctor."
+        },
+        "consultationFee": {
+          "type": "number",
+          "description": "Consultation fee in the smallest currency unit (e.g., cents, paise)."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code (e.g., INR, USD)."
+        },
+        "rating": {
+          "type": "number",
+          "description": "Average user rating from 1 to 5."
+        },
+        "ratingCount": {
+          "type": "number",
+          "description": "Total number of ratings received."
+        },
+        "walletBalance": {
+          "type": "number",
+          "description": "Doctor's earnings balance in the smallest currency unit."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of profile creation."
+        }
+      },
+      "required": ["uid", "name", "specialties", "qualifications", "consultationFee", "currency", "createdAt"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "type": "object",
+      "description": "Represents a scheduled appointment between a customer and a doctor.",
+      "properties": {
+        "customerId": { "type": "string", "description": "UID of the customer." },
+        "doctorId": { "type": "string", "description": "ID of the doctor profile." },
+        "doctorUid": { "type": "string", "description": "UID of the doctor." },
+        "scheduledAt": { "type": "string", "format": "date-time", "description": "The scheduled date and time of the appointment." },
+        "durationMinutes": { "type": "number", "description": "Duration of the appointment in minutes." },
+        "status": {
+          "type": "string",
+          "enum": ["requested", "confirmed", "cancelled", "completed", "no_show"],
+          "description": "The current status of the appointment."
+        },
+        "notes": { "type": "string", "description": "Notes from the patient for the appointment." },
+        "prescriptionId": { "type": "string", "description": "ID of the resulting prescription, if any." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of when the appointment was booked." }
+      },
+      "required": ["customerId", "doctorId", "doctorUid", "scheduledAt", "durationMinutes", "status", "createdAt"]
+    },
+    "Prescription": {
+      "title": "Prescription",
+      "type": "object",
+      "description": "Represents a digital prescription issued by a doctor.",
+      "properties": {
+        "appointmentId": { "type": "string", "description": "The appointment this prescription is for." },
+        "doctorId": { "type": "string", "description": "ID of the issuing doctor's profile." },
+        "customerId": { "type": "string", "description": "UID of the customer." },
+        "issuedAt": { "type": "string", "format": "date-time", "description": "Timestamp of when the prescription was issued." },
+        "drugs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "dosage": { "type": "string" },
+              "frequency": { "type": "string" },
+              "duration": { "type": "string" },
+              "notes": { "type": "string" }
+            },
+            "required": ["name", "dosage", "frequency"]
+          }
+        },
+        "notes": { "type": "string", "description": "General instructions for the prescription." }
+      },
+      "required": ["appointmentId", "doctorId", "customerId", "issuedAt", "drugs"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "type": "object",
+      "description": "Represents a single message in a community chat.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "photoURL": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "text",
+        "uid",
+        "displayName",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores public user profile information."
+    },
+    "/sellers/{sellerId}": {
+      "schema": {
+        "$ref": "#/entities/Seller"
+      },
+      "description": "Stores public seller profile information."
+    },
+    "/doctors/{doctorId}": {
+      "schema": {
+        "$ref": "#/entities/Doctor"
+      },
+      "description": "Stores public information for doctor profiles."
+    },
+    "/appointments/{appointmentId}": {
+      "schema": {
+        "$ref": "#/entities/Appointment"
+      },
+      "description": "Stores details about scheduled appointments."
+    },
+    "/prescriptions/{prescriptionId}": {
+      "schema": {
+        "$ref": "#/entities/Prescription"
+      },
+      "description": "Stores digital prescriptions issued by doctors."
+    },
+    "/communities/{communityId}/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ChatMessage"
+      },
+      "description": "Stores messages for a specific community channel."
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "prescription-analysis",
+      "description": "A doctor examining a prescription.",
+      "imageUrl": "https://picsum.photos/seed/101/600/400",
+      "imageHint": "prescription analysis"
+    },
+    {
+      "id": "interaction-checker",
+      "description": "Colorful pills and capsules.",
+      "imageUrl": "https://picsum.photos/seed/102/600/400",
+      "imageHint": "pills medication"
+    },
+    {
+      "id": "order-tracking",
+      "description": "A map with a delivery route.",
+      "imageUrl": "https://picsum.photos/seed/103/600/400",
+      "imageHint": "delivery map"
+    },
+     {
+      "id": "refills",
+      "description": "A calendar with a pill icon.",
+      "imageUrl": "https://picsum.photos/seed/104/600/400",
+      "imageHint": "calendar schedule"
+    }
+  ]
+}
